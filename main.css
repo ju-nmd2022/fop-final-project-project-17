@@ -1,9 +1,21 @@
 * {
-  background-color: #1b287564;
   font-family: "Press Start 2P", cursive;
 }
 
-.ground {
-  width: 800px;
-  height: 700px;
+body {
+  background-color: transparent;
+}
+
+#grassGround {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+#purpleCat {
+  position: relative;
+  height: 5;
+  width: 5;
+  top: 50px;
+  left: 50px;
 }
