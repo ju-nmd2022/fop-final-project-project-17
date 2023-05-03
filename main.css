@@ -1,21 +1,7 @@
-* {
-  font-family: "Press Start 2P", cursive;
-}
-
 body {
-  background-color: transparent;
-}
-
-#grassGround {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}
-
-#purpleCat {
-  position: relative;
-  height: 5;
-  width: 5;
-  top: 50px;
-  left: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
