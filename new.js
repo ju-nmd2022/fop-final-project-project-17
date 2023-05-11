@@ -23,6 +23,9 @@ function preload() {
   tree = loadImage("images/tree.png");
   firstCloud = loadImage("images/cloud.png");
   secondCloud = loadImage("images/cloud2.png");
+  fish = loadImage("images/fish.png");
+  dog = loadImage("images/dog.png");
+  mushroom = loadImage("images/mushroom.png");
 }
 
 function draw() {
