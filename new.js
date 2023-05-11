@@ -276,15 +276,15 @@ function draw() {
 
   // moves and flips the cat depending on key pressed
   if (keyIsDown(LEFT_ARROW)) {
-    if (catX > 35) {
-      //stops cat from continuing out of canvas
-      catX -= 8;
-      flipped = true;
-    }
+    // move cat to the left
+    catX -= 8;
+    flipped = true;
   } else if (keyIsDown(RIGHT_ARROW)) {
-    if (catX < width - 115) {
-      catX += 8;
-      flipped = false;
-    }
+    // move cat to the right
+    catX += 8;
+    flipped = false;
   }
+
+  // make sure the cat stays within the canvas boundaries
+  catX = constrain(catX, 0, width - 100);
 }
