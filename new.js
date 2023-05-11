@@ -10,7 +10,7 @@ function setup() {
 // variables used
 let state = "start";
 let ground, cat, tree, firstCloud, secondCloud, mountain;
-let cloudX = [0, 360]; // starting x-coordinates of the clouds
+let cloudX = [0, 360, 120]; // starting x-coordinates of the clouds
 let cloudSpeed = 2; // speed at which the clouds move
 let catX = 250; // starting x-coordinate of the cat image
 let flipped = false; // to check the cat image
@@ -23,6 +23,7 @@ function preload() {
   tree = loadImage("images/tree.png");
   firstCloud = loadImage("images/cloud.png");
   secondCloud = loadImage("images/cloud2.png");
+  thirdCloud = loadImage("images/cloud3.png");
   fish = loadImage("images/fish.png");
   dog = loadImage("images/dog.png");
   mushroom = loadImage("images/mushroom.png");
@@ -44,8 +45,10 @@ function draw() {
     }
     if (i === 0) {
       image(firstCloud, cloudX[i], 0, 300, 200);
-    } else {
+    } else if (i === 1) {
       image(secondCloud, cloudX[i], 0, 300, 230);
+    } else {
+      image(thirdCloud, cloudX[i], 0, 300, 230);
     }
   }
 
