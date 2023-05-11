@@ -35,7 +35,8 @@ function preload() {
 function scoreBar(offsetY, score) {
   let X = 550;
   let Y = 70 + offsetY;
-  let barHeight = map(score, 0, 10, 0, 150); // Map the score to the height of the bar
+  let barHeight = map(score, 0, 10, 0, 200); // Map the score to the height of the bar
+  barHeight = constrain(barHeight, 0, 210); // Limit the height of the bar within the background
   push();
   noStroke();
   fill(255, 150, 90);
@@ -215,7 +216,9 @@ function draw() {
       )
     ) {
       dogParticles.splice(i, 1); // remove the particle from the array
-      score--; // increase the score
+      if (score > 0) {
+        score--; // increase the score
+      }
       continue; // skip drawing this particle
     }
 
@@ -246,7 +249,9 @@ function draw() {
       )
     ) {
       mushroomParticles.splice(i, 1); // remove the particle from the array
-      score--; // increase the score
+      if (score > 0) {
+        score--; // increase the score
+      }
       continue; // skip drawing this particle
     }
 
