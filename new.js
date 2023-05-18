@@ -285,9 +285,7 @@ function SecondScreen() {
       )
     ) {
       dogParticles.splice(i, 1); // remove the particle from the array
-      if (score > 0) {
-        score--; // increase the score
-      }
+      score--; // decrease the score
       continue; // skip drawing this particle
     }
 
@@ -318,9 +316,7 @@ function SecondScreen() {
       )
     ) {
       mushroomParticles.splice(i, 1); // remove the particle from the array
-      if (score > 0) {
-        score--; // increase the score
-      }
+      score--; // decrease the score
       continue; // skip drawing this particle
     }
 
@@ -361,6 +357,16 @@ function SecondScreen() {
 
   // make sure the cat stays within the canvas boundaries
   catX = constrain(catX, 0, width - 80);
+
+  if (score >= 12) {
+    state = "end"; // go to the second level
+    score = 0; // reset the score
+  }
+
+  if (score == -1) {
+    state = "end"; // change end to game over when fixed todo
+    score = 0; // reset the score
+  }
 }
 
 // second level screen
