@@ -18,8 +18,10 @@ let dogParticles = []; // to store the particles
 let fishParticles = [];
 let mushroomParticles = [];
 let score = 0; // to store the score
+let chickenX = 50; //starting x-coordinate of the chicken image
 let startButton;
 
+// images
 function preload() {
   ground = loadImage("images/ground.png");
   cat = loadImage("images/cat.png");
@@ -41,6 +43,13 @@ function preload() {
   evil = loadImage("images/evil.png");
   startButton = loadImage("images/start.png");
   sun = loadImage("images/sun.png");
+  gameOver = loadImage("images/gameover.png");
+  deadCat = loadImage("images/deadcat.png");
+  chicken = loadImage("images/chicken.png");
+  newGame = loadImage("images/newgame.png");
+  win = loadImage("images/win.png");
+  loseText = loadImage("images/losetext.png");
+  startText = loadImage("images/starttext.png");
 }
 
 function scoreBar(offsetY, score) {
@@ -68,6 +77,13 @@ function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2) {
     return true; // Collided
   }
   return false; // Not collided
+}
+
+function isGameLost() {
+  if (score < 0) {
+    return true;
+  }
+  return false;
 }
 
 // home screen
@@ -99,11 +115,6 @@ function StartScreen() {
 
   pop();
 
-  // Add text to the canvas
-  fill(0, 0, 0);
-  textSize(50);
-  text("The cat got lost! Help it eat to get it home safely! 🐠", 170, 280);
-
   // draw ground, tree, cat, and start button
   tint(200, 255);
   image(tree, -90, 310, 250, 230);
@@ -112,6 +123,7 @@ function StartScreen() {
   noTint();
   image(cat, 100, 480, 80, 60);
   image(startButton, 200, 340, 200, 130);
+  image(startText, -50, -30, 700, 530);
 
   // Check if the start button is pressed
   if (
@@ -364,7 +376,7 @@ function SecondScreen() {
   }
 
   if (score == -1) {
-    state = "end"; // change end to game over when fixed todo
+    state = "lose"; // change end to game over when fixed todo
     score = 0; // reset the score
   }
 }
@@ -608,8 +620,106 @@ function ThirdScreen() {
 
   // make sure the cat stays within the canvas boundaries
   catX = constrain(catX, 0, width - 80);
+
+  if (score >= 12) {
+    state = "win"; // go to the win level
+    score = 0; // reset the score
+  }
+
+  if (score == -1) {
+    state = "lose"; // change end to game over when fixed todo
+    score = 0; // reset the score
+  }
 }
 
+// game over screen
+function GameOverScreen() {
+  // draw background and tinted mountain - distance effect with tint
+  background(0, 0, 0);
+
+  image(ground, -30, 300, 700, 600);
+  image(deadCat, 50, 400, 180, 160);
+  image(gameOver, 110, 20, 400, 300);
+  image(newGame, 440, 460, 150, 90);
+
+  push();
+  imageMode(CENTER);
+  translate(chickenX + 2, 0);
+  if (flipped) {
+    scale(-1, 1);
+  }
+  image(chicken, 0, 510, 80, 60);
+  pop();
+
+  // moves and flips the chicken depending on key pressed
+  if (keyIsDown(LEFT_ARROW)) {
+    // move chicken to the left
+    chickenX -= 8;
+    flipped = true;
+  } else if (keyIsDown(RIGHT_ARROW)) {
+    // move chicken to the right
+    chickenX += 8;
+    flipped = false;
+  }
+
+  // make sure the cat stays within the canvas boundaries
+  chickenX = constrain(chickenX, 20, width - 30);
+
+  image(loseText, 165, 240, 300, 200);
+}
+
+function WinScreen() {
+  // draw background and mountain
+  background(4, 16, 77);
+  noTint();
+  image(moon, 10, 30, 220, 160);
+  image(nightStars, 470, 20, 70, 50);
+  tint(200, 255);
+  image(nightStars, 270, 40, 50, 40);
+  image(nightStars, 30, 10, 70, 50);
+  image(house, -250, 150, 500, 400);
+
+  noTint();
+  push();
+
+  push();
+
+  // update cloud positions and draw clouds
+  noTint();
+  for (let i = 0; i < cloudX.length; i++) {
+    cloudX[i] -= cloudSpeed; // move the cloud to the left
+    if (cloudX[i] <= -300) {
+      // if cloud is off-screen to the left
+      cloudX[i] = 600; // move cloud to the right side of the canvas
+    }
+    if (i === 0) {
+      image(nightCloud1, cloudX[i], -20, 300, 200);
+    } else {
+      image(nightCloud2, cloudX[i], -20, 300, 230);
+    }
+  }
+
+  pop();
+
+  // draw ground, cat, and start button
+  noTint();
+  image(ground, -30, 300, 700, 600);
+  noTint();
+
+  // draw cat and flipped version
+  push();
+  image(cat, 50, 480, 80, 60);
+  image(win, 20, 110, 600, 390);
+  pop();
+}
+
+function keyPressed() {
+  if (state === "win" && keyCode === 32) {
+    state = "start";
+  }
+}
+
+// inspired by Jovan's lunar lander game code
 function draw() {
   if (state === "start") {
     StartScreen();
@@ -617,5 +727,9 @@ function draw() {
     SecondScreen();
   } else if (state === "end") {
     ThirdScreen();
+  } else if (state === "lose") {
+    GameOverScreen();
+  } else if (state === "win") {
+    WinScreen();
   }
 }

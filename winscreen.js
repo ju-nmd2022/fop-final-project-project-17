@@ -5,11 +5,10 @@ function setup() {
   createCanvas(600, 650);
   frameRate(35);
   background(4, 16, 77);
-  textFont('Press Start 2P')
+  textFont("Press Start 2P");
 }
 
 // variables used
-let state = "start";
 let ground, cat, tree, firstCloud, secondCloud, mountain;
 let cloudX = [0, 380]; // starting x-coordinates of the clouds
 let cloudSpeed = 2; // speed at which the clouds move
@@ -19,9 +18,8 @@ let dogParticles = []; // to store the particles
 let fishParticles = [];
 let mushroomParticles = [];
 let score = 0; // to store the score
-let blinkInterval;
-let blinkVisible = true; // to check if the sign is blinking
 let chickenX = 50; //starting x-coordinate of the chicken image
+let startButton;
 
 // images
 function preload() {
@@ -36,17 +34,20 @@ function preload() {
   mushroom = loadImage("images/mushroom.png");
   moon = loadImage("images/moon.png");
   postbox = loadImage("images/postbox.png");
-  nightcloud1 = loadImage("images/nightcloud1.png");
-  nightcloud2 = loadImage("images/nightcloud2.png");
-  nightstars = loadImage("images/nightstars.png");
+  nightCloud1 = loadImage("images/nightcloud1.png");
+  nightCloud2 = loadImage("images/nightcloud2.png");
+  nightStars = loadImage("images/nightstars.png");
   house = loadImage("images/house.png");
   nightStars = loadImage("images/nightstars.png");
   drop = loadImage("images/drop.png");
   evil = loadImage("images/evil.png");
+  startButton = loadImage("images/start.png");
+  sun = loadImage("images/sun.png");
   gameOver = loadImage("images/gameover.png");
   deadCat = loadImage("images/deadcat.png");
   chicken = loadImage("images/chicken.png");
   newGame = loadImage("images/newgame.png");
+  win = loadImage("images/win.png");
 }
 
 function scoreBar(offsetY, score) {
@@ -61,56 +62,47 @@ function scoreBar(offsetY, score) {
   pop();
 }
 
-function scoreBarBackground() {
-  push();
-  noStroke();
-  fill(255, 200, 90);
-  rect(568, 200, 20, 225);
-  pop();
-}
-
-function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2) {
-  if (x1 + w1 >= x2 && x1 <= x2 + w2 && y1 + h1 >= y2 && y1 <= y2 + h2) {
-    return true; // Collided
-  }
-  return false; // Not collided
-}
-
-
 function draw() {
-  // draw background and tinted mountain - distance effect with tint
-  background(0, 0, 0);
+  // draw background and mountain
+  background(4, 16, 77);
+  noTint();
+  image(moon, 10, 30, 220, 160);
+  image(nightStars, 470, 20, 70, 50);
+  tint(200, 255);
+  image(nightStars, 270, 40, 50, 40);
+  image(nightStars, 30, 10, 70, 50);
+  image(house, -250, 150, 500, 400);
 
-  image(ground, -30, 300, 700, 600);
-  image(deadCat, 50, 400, 180, 160);
-  image(gameOver, 110, 20, 400, 300);
-  image(newGame, 440, 460, 150, 90);
+  noTint();
+  push();
 
   push();
-  imageMode(CENTER);
-  translate(chickenX + 2, 0);
-  if (flipped) {
-    scale(-1, 1);
+
+  // update cloud positions and draw clouds
+  noTint();
+  for (let i = 0; i < cloudX.length; i++) {
+    cloudX[i] -= cloudSpeed; // move the cloud to the left
+    if (cloudX[i] <= -300) {
+      // if cloud is off-screen to the left
+      cloudX[i] = 600; // move cloud to the right side of the canvas
+    }
+    if (i === 0) {
+      image(nightCloud1, cloudX[i], -20, 300, 200);
+    } else {
+      image(nightCloud2, cloudX[i], -20, 300, 230);
+    }
   }
-  image(chicken, 0, 510, 80, 60);
+
   pop();
-  
-  // moves and flips the chicken depending on key pressed
-  if (keyIsDown(LEFT_ARROW)) {
-    // move chicken to the left
-    chickenX -= 8;
-    flipped = true;
-  } else if (keyIsDown(RIGHT_ARROW)) {
-    // move chicken to the right
-    chickenX += 8;
-    flipped = false;
-  }
 
-  // make sure the cat stays within the canvas boundaries
-  chickenX = constrain(chickenX, 20, width - 30);
+  // draw ground, cat, and start button
+  noTint();
+  image(ground, -30, 300, 700, 600);
+  noTint();
 
-    // Add text to the canvas
-    fill(255, 255, 255);
-    textSize(30);
-    text("Oh...I became a chicken?" , 250, 400);
+  // draw cat and flipped version
+  push();
+  image(cat, 50, 480, 80, 60);
+  image(win, 20, 110, 600, 390);
+  pop();
 }
