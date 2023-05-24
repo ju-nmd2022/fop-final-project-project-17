@@ -50,59 +50,35 @@ function preload() {
   win = loadImage("images/win.png");
 }
 
-function scoreBar(offsetY, score) {
-  let X = 550;
-  let Y = 70 + offsetY;
-  let barHeight = map(score, 0, 10, 0, 200); // Map the score to the height of the bar
-  barHeight = constrain(barHeight, 0, 210); // Limit the height of the bar within the background
-  push();
-  noStroke();
-  fill(255, 150, 90);
-  rect(572, Y + 350, 10, -barHeight); // Use -barHeight to draw the bar upwards
-  pop();
-}
-
-function draw() {
-  // draw background and mountain
-  background(4, 16, 77);
-  noTint();
-  image(moon, 10, 30, 220, 160);
-  image(nightStars, 470, 20, 70, 50);
-  tint(200, 255);
-  image(nightStars, 270, 40, 50, 40);
-  image(nightStars, 30, 10, 70, 50);
-  image(house, -250, 150, 500, 400);
-
-  noTint();
-  push();
-
-  push();
-
-  // update cloud positions and draw clouds
-  noTint();
-  for (let i = 0; i < cloudX.length; i++) {
-    cloudX[i] -= cloudSpeed; // move the cloud to the left
-    if (cloudX[i] <= -300) {
-      // if cloud is off-screen to the left
-      cloudX[i] = 600; // move cloud to the right side of the canvas
+function () {
+    // draw background and mountain
+    background(135, 206, 235);
+    tint(100, 128);
+    image(mountain, 240, 200, 580, 450);
+    tint(200, 255);
+    image(tree, -90, 310, 250, 230);
+    scoreBar(0);
+    scoreBarBackground();
+    noTint();
+    image(sun, 430, 20, 260, 200);
+  
+    pop();
+    push();
+  
+    // update cloud positions and draw clouds
+    noTint();
+    for (let i = 0; i < cloudX.length; i++) {
+      cloudX[i] -= cloudSpeed; // move the cloud to the left
+      if (cloudX[i] <= -300) {
+        // if cloud is off-screen to the left
+        cloudX[i] = 600; // move cloud to the right side of the canvas
+      }
+      if (i === 0) {
+        image(firstCloud, cloudX[i], -50, 300, 200);
+      } else {
+        image(secondCloud, cloudX[i], -50, 300, 230);
+      }
     }
-    if (i === 0) {
-      image(nightCloud1, cloudX[i], -20, 300, 200);
-    } else {
-      image(nightCloud2, cloudX[i], -20, 300, 230);
-    }
+  
+    pop();
   }
-
-  pop();
-
-  // draw ground, cat, and start button
-  noTint();
-  image(ground, -30, 300, 700, 600);
-  noTint();
-
-  // draw cat and flipped version
-  push();
-  image(cat, 50, 480, 80, 60);
-  image(win, 20, 110, 600, 390);
-  pop();
-}
