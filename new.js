@@ -55,6 +55,7 @@ function preload() {
   powerUpItem = loadImage("images/glasses.png");
   powerUpCat = loadImage("images/supercat.png");
   currentCat = cat;
+  levelUp = loadImage("images/levelup.png");
 }
 
 function pauseArray() {
@@ -211,7 +212,7 @@ function SecondScreen() {
     }
 
     for (let i = 0; i < dogParticles.length; i++) {
-      dogParticles[i][1] += 2;
+      dogParticles[i][1] += 4;
       if (dogParticles[i][1] > height) {
         dogParticles[i][1] = 0;
         dogParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
@@ -235,7 +236,7 @@ function SecondScreen() {
   }
 
   for (let i = 0; i < fishParticles.length; i++) {
-    fishParticles[i][1] += 2;
+    fishParticles[i][1] += 4;
     if (fishParticles[i][1] > height) {
       fishParticles[i][1] = 0;
       fishParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
@@ -259,7 +260,7 @@ function SecondScreen() {
     }
 
     for (let i = 0; i < mushroomParticles.length; i++) {
-      mushroomParticles[i][1] += 2;
+      mushroomParticles[i][1] += 4;
       if (mushroomParticles[i][1] > height) {
         mushroomParticles[i][1] = 0;
         mushroomParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
@@ -321,8 +322,7 @@ function SecondScreen() {
       )
     ) {
       glassesParticles.splice(i, 1); // remove the particle from the array
-      mushroomParticles = [];
-      dogParticles = [];
+
       isPaused = true;
       detected_glasses = true;
       currentCat = powerUpCat;
@@ -334,6 +334,14 @@ function SecondScreen() {
   }
   if (detected_glasses) {
     setTimeout(() => {
+      // Remove mushroomParticles and dogParticles under Y 325
+      mushroomParticles = mushroomParticles.filter((particle) => {
+        return particle[1] < 325;
+      });
+      dogParticles = dogParticles.filter((particle) => {
+        return particle[1] < 325;
+      });
+
       isPaused = false;
       currentCat = cat;
       clearInterval(intervalID);
@@ -480,13 +488,58 @@ function SecondScreen() {
   catX = constrain(catX, 0, width - 80);
 
   if (score >= 12) {
-    state = "end"; // go to the second level
+    state = "level up"; // go to the second level
     score = 0; // reset the score
   }
 
   if (score == -1) {
-    state = "lose"; // change end to game over when fixed todo
+    state = "lose";
     score = 0; // reset the score
+  }
+}
+
+// level up screen
+function NextLevelScreen() {
+  // draw background and tinted house - distance effect with tint
+  background(24, 47, 158);
+  tint(100, 128);
+  image(mountain, -200, 200, 580, 450);
+  tint(150, 255);
+  image(house, 440, 350, 240, 180);
+  noTint();
+  image(levelUp, 90, 100, 450, 350);
+  image(nightStars, 470, 100, 70, 50);
+  image(nightStars, 70, 200, 70, 50);
+  tint(200, 255);
+  image(nightStars, 320, 25, 50, 40);
+  image(nightStars, 120, 80, 50, 30);
+  noTint();
+  image(ground, -30, 300, 700, 600);
+  noTint();
+  image(cat, 250, 480, 80, 60);
+
+  push();
+
+  // update cloud positions and draw clouds
+  noTint();
+  for (let i = 0; i < cloudX.length; i++) {
+    cloudX[i] -= cloudSpeed; // move the cloud to the left
+    if (cloudX[i] <= -300) {
+      // if cloud is off-screen to the left
+      cloudX[i] = 600; // move cloud to the right side of the canvas
+    }
+    if (i === 0) {
+      image(nightCloud1, cloudX[i], -20, 300, 200);
+    } else {
+      image(nightCloud2, cloudX[i], -20, 300, 230);
+    }
+  }
+
+  pop();
+
+  // Check if the spacebar is pressed to start the game
+  if (keyIsDown(32)) {
+    state = "end"; // Transition to the second screen
   }
 }
 
@@ -495,7 +548,7 @@ function ThirdScreen() {
   // draw background and mountain
   background(4, 16, 77);
   tint(100, 255);
-  image(house, 0, 285, 290, 250);
+  image(house, -5, 235, 400, 300);
   tint(200, 255);
   image(postbox, 420, 410, 150, 130);
   scoreBar(0);
@@ -511,7 +564,7 @@ function ThirdScreen() {
   push();
 
   // for dog particles
-  let max_no_of_dogParticles = 4;
+  let max_no_of_dogParticles = 5;
   let expected_no_of_dogParticles = Math.min(
     max_no_of_dogParticles,
     millis() / 2000
@@ -521,17 +574,17 @@ function ThirdScreen() {
   }
 
   for (let i = 0; i < dogParticles.length; i++) {
-    dogParticles[i][1] += 2;
+    dogParticles[i][1] += 6;
     if (dogParticles[i][1] > height) {
       dogParticles[i][1] = 0;
       dogParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
     }
     // Draw particles(dog)
-    image(dog, dogParticles[i][0] + 40, dogParticles[i][1] + 30, 70, 55);
+    image(dog, dogParticles[i][0] + 40, dogParticles[i][1] + 30, 90, 65);
   }
 
   // for fish particles
-  let max_no_of_fishParticles = 4;
+  let max_no_of_fishParticles = 3;
   let expected_no_of_fishParticles = Math.min(
     max_no_of_fishParticles,
     millis() / 4000
@@ -541,7 +594,7 @@ function ThirdScreen() {
   }
 
   for (let i = 0; i < fishParticles.length; i++) {
-    fishParticles[i][1] += 2;
+    fishParticles[i][1] += 6;
     if (fishParticles[i][1] > height) {
       fishParticles[i][1] = 0;
       fishParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
@@ -551,7 +604,7 @@ function ThirdScreen() {
   }
 
   // for mushroom particles
-  let max_no_of_mushroomParticles = 4;
+  let max_no_of_mushroomParticles = 5;
   let expected_no_of_mushroomParticles = Math.min(
     max_no_of_mushroomParticles,
     millis() / 2000
@@ -561,7 +614,7 @@ function ThirdScreen() {
   }
 
   for (let i = 0; i < mushroomParticles.length; i++) {
-    mushroomParticles[i][1] += 2;
+    mushroomParticles[i][1] += 6;
     if (mushroomParticles[i][1] > height) {
       mushroomParticles[i][1] = 0;
       mushroomParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
@@ -653,9 +706,7 @@ function ThirdScreen() {
       )
     ) {
       dogParticles.splice(i, 1); // remove the particle from the array
-      if (score > 0) {
-        score--; // decrease the score
-      }
+      score--; // decrease the score
       continue; // skip drawing this particle
     }
 
@@ -836,6 +887,8 @@ function draw() {
     StartScreen();
   } else if (state === "game") {
     SecondScreen();
+  } else if (state === "level up") {
+    NextLevelScreen();
   } else if (state === "end") {
     ThirdScreen();
   } else if (state === "lose") {
