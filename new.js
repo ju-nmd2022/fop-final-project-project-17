@@ -23,6 +23,7 @@ let chickenX = 50; //starting x-coordinate of the chicken image
 let startButton;
 let isPaused = false;
 let pauseStartTime;
+let currentCat;
 
 // images
 function preload() {
@@ -55,6 +56,7 @@ function preload() {
   startText = loadImage("images/starttext.png");
   powerUpItem = loadImage("images/glasses.png");
   powerUpCat = loadImage("images/supercat.png");
+  currentCat = cat;
 }
 
 function pauseArray() {
@@ -165,52 +167,60 @@ function SecondScreen() {
   image(sun, 430, 20, 260, 200);
 
   noTint();
-  
-push();
-if (!isPaused) {
-let max_no_of_glassesParticles = 1;
-  let expected_no_of_glassesParticles = Math.min(
-    max_no_of_glassesParticles,
-    millis() / 10000
-  );
-  if (glassesParticles.length < expected_no_of_glassesParticles) {
-    glassesParticles.push([Math.random() * (width - 24) + 12, 0]);
-  }
 
-  for (let i = 0; i < glassesParticles.length; i++) {
-    glassesParticles[i][1] += 2;
-    if (glassesParticles[i][1] > height) {
-      glassesParticles[i][1] = 0;
-      glassesParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
+  push();
+
+  // glasses particles thing
+  if (!isPaused) {
+    let max_no_of_glassesParticles = 1;
+    let expected_no_of_glassesParticles = Math.min(max_no_of_glassesParticles);
+    if (glassesParticles.length < expected_no_of_glassesParticles) {
+      glassesParticles.push([Math.random() * (width - 24) + 12, 0]);
     }
-    // Draw particles(glasses)
-    image(powerUpItem, glassesParticles[i][0] + 10, glassesParticles[i][1] + 30, 70, 55);
-}
-}
+
+    for (let i = 0; i < glassesParticles.length; i++) {
+      glassesParticles[i][1] += 2;
+      if (glassesParticles[i][1] > height) {
+        glassesParticles[i][1] = 0;
+        glassesParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
+      }
+      // Draw particles(glasses)
+      image(
+        powerUpItem,
+        glassesParticles[i][0] + 10,
+        glassesParticles[i][1] + 30,
+        70,
+        55
+      );
+    }
+  }
 
   pop();
   push();
 
   // for dog particles
   if (!isPaused) {
-  let max_no_of_dogParticles = 4;
-  let expected_no_of_dogParticles = Math.min(
-    max_no_of_dogParticles,
-    millis() / 2000
-  );
-  if (dogParticles.length < expected_no_of_dogParticles) {
-    dogParticles.push([Math.random() * (width - 24) + 12, 0]);
-  }
-
-  for (let i = 0; i < dogParticles.length; i++) {
-    dogParticles[i][1] += 2;
-    if (dogParticles[i][1] > height) {
-      dogParticles[i][1] = 0;
-      dogParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
+    let max_no_of_dogParticles = 4;
+    let expected_no_of_dogParticles = Math.min(
+      max_no_of_dogParticles,
+      millis() / 2000
+    );
+    if (dogParticles.length < expected_no_of_dogParticles) {
+      dogParticles.push([
+        Math.random() * (width - 24) + 12,
+        Math.random() * (height - 630) + 100,
+      ]);
     }
-    // Draw particles(dog)
-    image(dog, dogParticles[i][0] + 40, dogParticles[i][1] + 30, 70, 55);
-  }
+
+    for (let i = 0; i < dogParticles.length; i++) {
+      dogParticles[i][1] += 2;
+      if (dogParticles[i][1] > height) {
+        dogParticles[i][1] = 0;
+        dogParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
+      }
+      // Draw particles(dog)
+      image(dog, dogParticles[i][0] + 40, dogParticles[i][1] + 30, 70, 55);
+    }
   }
 
   // for fish particles
@@ -220,7 +230,10 @@ let max_no_of_glassesParticles = 1;
     millis() / 4000
   );
   if (fishParticles.length < expected_no_of_fishParticles) {
-    fishParticles.push([Math.random() * (width - 24) + 12, 0]);
+    fishParticles.push([
+      Math.random() * (width - 24) + 12,
+      Math.random() * (height - 630) + 100,
+    ]);
   }
 
   for (let i = 0; i < fishParticles.length; i++) {
@@ -235,30 +248,33 @@ let max_no_of_glassesParticles = 1;
 
   // for mushroom particles
   if (!isPaused) {
-  let max_no_of_mushroomParticles = 4;
-  let expected_no_of_mushroomParticles = Math.min(
-    max_no_of_mushroomParticles,
-    millis() / 2000
-  );
-  if (mushroomParticles.length < expected_no_of_mushroomParticles) {
-    mushroomParticles.push([Math.random() * (width - 24) + 12, 0]);
-  }
-
-  for (let i = 0; i < mushroomParticles.length; i++) {
-    mushroomParticles[i][1] += 2;
-    if (mushroomParticles[i][1] > height) {
-      mushroomParticles[i][1] = 0;
-      mushroomParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
-    }
-    // Draw particles(mushroom)
-    image(
-      mushroom,
-      mushroomParticles[i][0] + 40,
-      mushroomParticles[i][1] + 30,
-      35,
-      25
+    let max_no_of_mushroomParticles = 4;
+    let expected_no_of_mushroomParticles = Math.min(
+      max_no_of_mushroomParticles,
+      millis() / 2000
     );
-  }
+    if (mushroomParticles.length < expected_no_of_mushroomParticles) {
+      mushroomParticles.push([
+        Math.random() * (width - 24) + 12,
+        Math.random() * (height - 630) + 100,
+      ]);
+    }
+
+    for (let i = 0; i < mushroomParticles.length; i++) {
+      mushroomParticles[i][1] += 2;
+      if (mushroomParticles[i][1] > height) {
+        mushroomParticles[i][1] = 0;
+        mushroomParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
+      }
+      // Draw particles(mushroom)
+      image(
+        mushroom,
+        mushroomParticles[i][0] + 40,
+        mushroomParticles[i][1] + 30,
+        35,
+        25
+      );
+    }
   }
 
   pop();
@@ -284,14 +300,16 @@ let max_no_of_glassesParticles = 1;
 
   push();
 
+  let detected_glasses = false;
+  let intervalID = 0;
   for (let i = 0; i < glassesParticles.length; i++) {
     glassesParticles[i][1] += 1;
     if (glassesParticles[i][1] > height) {
       glassesParticles[i][1] = 5;
       glassesParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
     }
-  
-    // check for collision with cat object
+
+    // check for collision of glasses with cat object
     if (
       checkCollision(
         glassesParticles[i][0] + 40,
@@ -301,15 +319,29 @@ let max_no_of_glassesParticles = 1;
         catX,
         480,
         80,
-        80
+        20
       )
     ) {
       glassesParticles.splice(i, 1); // remove the particle from the array
+      mushroomParticles = [];
+      dogParticles = [];
       isPaused = true;
+      detected_glasses = true;
+      currentCat = powerUpCat;
+      intervalID = setInterval(() => {
+        console.log("superPower");
+      }, 1000);
       continue; // skip drawing this particle
     }
   }
-  
+  if (detected_glasses) {
+    setTimeout(() => {
+      isPaused = false;
+      currentCat = cat;
+      clearInterval(intervalID);
+    }, 5000);
+  }
+
   // fish collision with the cat
 
   for (let i = 0; i < fishParticles.length; i++) {
@@ -329,7 +361,7 @@ let max_no_of_glassesParticles = 1;
         catX,
         480,
         80,
-        80
+        20
       )
     ) {
       fishParticles.splice(i, 1); // remove the particle from the array
@@ -338,7 +370,7 @@ let max_no_of_glassesParticles = 1;
     }
 
     // Draw particles(fish)
-    image(fish, fishParticles[i][0] + 40);
+    // image(fish, fishParticles[i][0] + 40);
   }
 
   // dog collision with the cat
@@ -360,16 +392,23 @@ let max_no_of_glassesParticles = 1;
         catX,
         480,
         80,
-        80
+        20
       )
     ) {
+      console.log(
+        "dog",
+        dogParticles[i][0] + 40,
+        dogParticles[i][1] + 30,
+        catX
+      );
       dogParticles.splice(i, 1); // remove the particle from the array
       score--; // decrease the score
+
       continue; // skip drawing this particle
     }
 
     // Draw particles(fish)
-    image(dog, dogParticles[i][0] + 40);
+    // image(dog, dogParticles[i][0] + 40);
   }
 
   // mushroom collision with the cat
@@ -391,16 +430,21 @@ let max_no_of_glassesParticles = 1;
         catX,
         480,
         80,
-        80
+        20
       )
     ) {
+      console.log(
+        "mushroom",
+        mushroomParticles[i][0] + 40,
+        mushroomParticles[i][1] + 30,
+        catX
+      );
       mushroomParticles.splice(i, 1); // remove the particle from the array
       score--; // decrease the score
       continue; // skip drawing this particle
     }
-
-    // Draw particles(fish)
-    image(mushroom, mushroomParticles[i][0] + 20);
+    // Draw particles(mushroom)
+    // image(mushroom, mushroomParticles[i][0] + 40, mushroomParticles[i][1] + 30);
   }
 
   // Draw the score bar
@@ -420,7 +464,7 @@ let max_no_of_glassesParticles = 1;
   if (flipped) {
     scale(-1, 1);
   }
-  image(cat, 0, 510, 80, 60);
+  image(currentCat, 0, 510, 80, 60);
   pop();
 
   // moves and flips the cat depending on key pressed
@@ -576,7 +620,7 @@ function ThirdScreen() {
         catX,
         480,
         80,
-        80
+        20
       )
     ) {
       fishParticles.splice(i, 1); // remove the particle from the array
@@ -607,12 +651,12 @@ function ThirdScreen() {
         catX,
         480,
         80,
-        80
+        20
       )
     ) {
       dogParticles.splice(i, 1); // remove the particle from the array
       if (score > 0) {
-        score--; // increase the score
+        score--; // decrease the score
       }
       continue; // skip drawing this particle
     }
@@ -640,7 +684,7 @@ function ThirdScreen() {
         catX,
         480,
         80,
-        80
+        20
       )
     ) {
       mushroomParticles.splice(i, 1); // remove the particle from the array
@@ -686,7 +730,7 @@ function ThirdScreen() {
   }
 
   // make sure the cat stays within the canvas boundaries
-  catX = constrain(catX, 0, width - 80);
+  catX = constrain(catX, 0, width - 130);
 
   if (score >= 12) {
     state = "win"; // go to the win level
@@ -735,7 +779,6 @@ function GameOverScreen() {
     window.location.reload();
     chickenX = 50;
   }
-
 }
 
 function WinScreen() {
