@@ -43,8 +43,6 @@ function preload() {
   nightStars = loadImage("images/nightstars.png");
   house = loadImage("images/house.png");
   nightStars = loadImage("images/nightstars.png");
-  drop = loadImage("images/drop.png");
-  evil = loadImage("images/evil.png");
   startButton = loadImage("images/start.png");
   sun = loadImage("images/sun.png");
   gameOver = loadImage("images/gameover.png");
@@ -730,7 +728,7 @@ function ThirdScreen() {
   }
 
   // make sure the cat stays within the canvas boundaries
-  catX = constrain(catX, 0, width - 130);
+  catX = constrain(catX, 0, width - 80);
 
   if (score >= 12) {
     state = "win"; // go to the win level
