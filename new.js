@@ -24,6 +24,7 @@ let startButton;
 let isPaused = false;
 let pauseStartTime;
 let currentCat;
+let music = new Audio("01 boba date.wav");
 
 // images
 function preload() {
@@ -164,6 +165,9 @@ function SecondScreen() {
   scoreBarBackground();
   noTint();
   image(sun, 430, 20, 260, 200);
+
+  // play background music
+  music.play();
 
   noTint();
 
