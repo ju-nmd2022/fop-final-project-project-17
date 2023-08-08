@@ -88,8 +88,11 @@ function scoreBarBackground() {
   pop();
 }
 
+// we tried to rewrtie it on our own, but after hours of trying we couldnt think of anything concrete, althought it is technically different :))
+// here is the colision function originally inspired by https://tutorialedge.net/gamedev/aabb-collision-detection-tutorial/
+
 function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2) {
-  if (x1 + w1 >= x2 && x1 <= x2 + w2 && y1 + h1 >= y2 && y1 <= y2 + h2) {
+  if (x1 + w1 > x2 && x1 < x2 + w2 && y1 + h1 > y2 && y1 < y2 + h2) {
     return true; // Collided
   }
   return false; // Not collided
@@ -153,6 +156,48 @@ function StartScreen() {
   }
 }
 
+function Particles(
+  expected_no_of_Particles,
+  particles,
+  img,
+  imgH,
+  imgW,
+  glasses = false,
+  secondLvl = false
+) {
+  if (particles.length < expected_no_of_Particles) {
+    if (glasses == true || secondLvl == true) {
+      particles.push([Math.random() * (width - 24) + 12, 0]);
+    } else {
+      particles.push([
+        Math.random() * (width - 24) + 12,
+        Math.random() * (height - 630) + 100,
+      ]);
+    }
+  }
+
+  for (let i = 0; i < particles.length; i++) {
+    if (glasses == true) {
+      particles[i][1] += 2;
+    }
+    if (secondLvl == true) {
+      particles[i][1] += 6;
+    } else {
+      particles[i][1] += 4;
+    }
+    if (particles[i][1] > height) {
+      particles[i][1] = 0;
+      particles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
+    }
+    // Draw particles(dog)
+    if (glasses == true) {
+      image(img, particles[i][0] + 10, particles[i][1] + 30, imgH, imgW);
+    } else {
+      image(img, particles[i][0] + 40, particles[i][1] + 30, imgH, imgW);
+    }
+  }
+}
+
 // first level screen
 function SecondScreen() {
   // draw background and mountain
@@ -173,115 +218,40 @@ function SecondScreen() {
 
   push();
 
-  // glasses particles thing
-  if (!isPaused) {
-    let max_no_of_glassesParticles = 1;
-    let expected_no_of_glassesParticles = Math.min(max_no_of_glassesParticles);
-    if (glassesParticles.length < expected_no_of_glassesParticles) {
-      glassesParticles.push([Math.random() * (width - 24) + 12, 0]);
-    }
-
-    for (let i = 0; i < glassesParticles.length; i++) {
-      glassesParticles[i][1] += 2;
-      if (glassesParticles[i][1] > height) {
-        glassesParticles[i][1] = 0;
-        glassesParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
-      }
-      // Draw particles(glasses)
-      image(
-        powerUpItem,
-        glassesParticles[i][0] + 10,
-        glassesParticles[i][1] + 30,
-        70,
-        55
-      );
-    }
-  }
-
-  pop();
-  push();
-
   // for dog particles
-  if (!isPaused) {
-    let max_no_of_dogParticles = 4;
-    let expected_no_of_dogParticles = Math.min(
-      max_no_of_dogParticles,
-      millis() / 2000
-    );
-    if (dogParticles.length < expected_no_of_dogParticles) {
-      dogParticles.push([
-        Math.random() * (width - 24) + 12,
-        Math.random() * (height - 630) + 100,
-      ]);
-    }
-
-    for (let i = 0; i < dogParticles.length; i++) {
-      dogParticles[i][1] += 4;
-      if (dogParticles[i][1] > height) {
-        dogParticles[i][1] = 0;
-        dogParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
-      }
-      // Draw particles(dog)
-      image(dog, dogParticles[i][0] + 40, dogParticles[i][1] + 30, 70, 55);
-    }
-  }
-
   // for fish particles
-  let max_no_of_fishParticles = 4;
+  // for mushroom particles
+
+  let max_no_of_particles = 4;
   let expected_no_of_fishParticles = Math.min(
-    max_no_of_fishParticles,
+    max_no_of_particles,
     millis() / 4000
   );
-  if (fishParticles.length < expected_no_of_fishParticles) {
-    fishParticles.push([
-      Math.random() * (width - 24) + 12,
-      Math.random() * (height - 630) + 100,
-    ]);
-  }
+  Particles(expected_no_of_fishParticles, fishParticles, fish, 30, 20, false);
 
-  for (let i = 0; i < fishParticles.length; i++) {
-    fishParticles[i][1] += 4;
-    if (fishParticles[i][1] > height) {
-      fishParticles[i][1] = 0;
-      fishParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
-    }
-    // Draw particles(fish)
-    image(fish, fishParticles[i][0] + 40, fishParticles[i][1] + 30, 30, 20);
-  }
-
-  // for mushroom particles
   if (!isPaused) {
-    let max_no_of_mushroomParticles = 4;
-    let expected_no_of_mushroomParticles = Math.min(
-      max_no_of_mushroomParticles,
+    let expected_no_of_dogParticles = Math.min(
+      max_no_of_particles,
       millis() / 2000
     );
-    if (mushroomParticles.length < expected_no_of_mushroomParticles) {
-      mushroomParticles.push([
-        Math.random() * (width - 24) + 12,
-        Math.random() * (height - 630) + 100,
-      ]);
-    }
+    let expected_no_of_mushroomParticles = Math.min(
+      max_no_of_particles,
+      millis() / 2000
+    );
 
-    for (let i = 0; i < mushroomParticles.length; i++) {
-      mushroomParticles[i][1] += 4;
-      if (mushroomParticles[i][1] > height) {
-        mushroomParticles[i][1] = 0;
-        mushroomParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
-      }
-      // Draw particles(mushroom)
-      image(
-        mushroom,
-        mushroomParticles[i][0] + 40,
-        mushroomParticles[i][1] + 30,
-        35,
-        25
-      );
-    }
+    Particles(expected_no_of_dogParticles, dogParticles, dog, 70, 55, false);
+    Particles(
+      expected_no_of_mushroomParticles,
+      mushroomParticles,
+      mushroom,
+      35,
+      25,
+      false
+    );
+    Particles(1, glassesParticles, powerUpItem, 70, 55, true);
   }
 
   pop();
-
   push();
 
   // update cloud positions and draw clouds
@@ -300,7 +270,6 @@ function SecondScreen() {
   }
 
   pop();
-
   push();
 
   let detected_glasses = false;
@@ -345,7 +314,6 @@ function SecondScreen() {
       dogParticles = dogParticles.filter((particle) => {
         return particle[1] < 325;
       });
-
       isPaused = false;
       currentCat = cat;
       clearInterval(intervalID);
@@ -412,8 +380,10 @@ function SecondScreen() {
         catX
       );
       dogParticles.splice(i, 1); // remove the particle from the array
-      score--; // decrease the score
-
+      if (!isPaused) {
+        console.log("detected glasses> " + isPaused);
+        score--; // decrease the score
+      }
       continue; // skip drawing this particle
     }
 
@@ -450,7 +420,10 @@ function SecondScreen() {
         catX
       );
       mushroomParticles.splice(i, 1); // remove the particle from the array
-      score--; // decrease the score
+      if (!isPaused) {
+        console.log("detected glasses> " + isPaused);
+        score--; // decrease the score
+      }
       continue; // skip drawing this particle
     }
     // Draw particles(mushroom)
@@ -496,7 +469,7 @@ function SecondScreen() {
     score = 0; // reset the score
   }
 
-  if (score == -1) {
+  if (score <= -1) {
     state = "lose";
     score = 0; // reset the score
   }
@@ -547,7 +520,7 @@ function NextLevelScreen() {
   }
 }
 
-// second level screen
+// SECOND LEVEL SCREEN
 function ThirdScreen() {
   // draw background and mountain
   background(4, 16, 77);
@@ -573,19 +546,6 @@ function ThirdScreen() {
     max_no_of_dogParticles,
     millis() / 2000
   );
-  if (dogParticles.length < expected_no_of_dogParticles) {
-    dogParticles.push([Math.random() * (width - 24) + 12, 0]);
-  }
-
-  for (let i = 0; i < dogParticles.length; i++) {
-    dogParticles[i][1] += 6;
-    if (dogParticles[i][1] > height) {
-      dogParticles[i][1] = 0;
-      dogParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
-    }
-    // Draw particles(dog)
-    image(dog, dogParticles[i][0] + 40, dogParticles[i][1] + 30, 90, 65);
-  }
 
   // for fish particles
   let max_no_of_fishParticles = 3;
@@ -593,19 +553,6 @@ function ThirdScreen() {
     max_no_of_fishParticles,
     millis() / 4000
   );
-  if (fishParticles.length < expected_no_of_fishParticles) {
-    fishParticles.push([Math.random() * (width - 24) + 12, 0]);
-  }
-
-  for (let i = 0; i < fishParticles.length; i++) {
-    fishParticles[i][1] += 6;
-    if (fishParticles[i][1] > height) {
-      fishParticles[i][1] = 0;
-      fishParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
-    }
-    // Draw particles(fish)
-    image(fish, fishParticles[i][0] + 40, fishParticles[i][1] + 30, 30, 20);
-  }
 
   // for mushroom particles
   let max_no_of_mushroomParticles = 5;
@@ -613,25 +560,17 @@ function ThirdScreen() {
     max_no_of_mushroomParticles,
     millis() / 2000
   );
-  if (mushroomParticles.length < expected_no_of_mushroomParticles) {
-    mushroomParticles.push([Math.random() * (width - 24) + 12, 0]);
-  }
 
-  for (let i = 0; i < mushroomParticles.length; i++) {
-    mushroomParticles[i][1] += 6;
-    if (mushroomParticles[i][1] > height) {
-      mushroomParticles[i][1] = 0;
-      mushroomParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
-    }
-    // Draw particles(mushroom)
-    image(
-      mushroom,
-      mushroomParticles[i][0] + 40,
-      mushroomParticles[i][1] + 30,
-      55,
-      45
-    );
-  }
+  // caculates where to and draws particles
+  Particles(expected_no_of_dogParticles, dogParticles, dog, 90, 65);
+  Particles(expected_no_of_fishParticles, fishParticles, fish, 30, 20);
+  Particles(
+    expected_no_of_mushroomParticles,
+    mushroomParticles,
+    mushroom,
+    55,
+    45
+  );
 
   pop();
 
@@ -790,7 +729,7 @@ function ThirdScreen() {
     score = 0; // reset the score
   }
 
-  if (score == -1) {
+  if (score <= -1) {
     state = "lose"; // change end to game over when fixed todo
     score = 0; // reset the score
   }
