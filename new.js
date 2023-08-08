@@ -227,7 +227,7 @@ function SecondScreen() {
     max_no_of_particles,
     millis() / 4000
   );
-  Particles(expected_no_of_fishParticles, fishParticles, fish, 30, 20, false);
+  Particles(expected_no_of_fishParticles, fishParticles, fish, 30, 20);
 
   if (!isPaused) {
     let expected_no_of_dogParticles = Math.min(
@@ -239,14 +239,13 @@ function SecondScreen() {
       millis() / 2000
     );
 
-    Particles(expected_no_of_dogParticles, dogParticles, dog, 70, 55, false);
+    Particles(expected_no_of_dogParticles, dogParticles, dog, 70, 55);
     Particles(
       expected_no_of_mushroomParticles,
       mushroomParticles,
       mushroom,
       35,
-      25,
-      false
+      25
     );
     Particles(1, glassesParticles, powerUpItem, 70, 55, true);
   }
@@ -562,14 +561,32 @@ function ThirdScreen() {
   );
 
   // caculates where to and draws particles
-  Particles(expected_no_of_dogParticles, dogParticles, dog, 90, 65);
-  Particles(expected_no_of_fishParticles, fishParticles, fish, 30, 20);
+  Particles(
+    expected_no_of_dogParticles,
+    dogParticles,
+    dog,
+    90,
+    65,
+    false,
+    true
+  );
+  Particles(
+    expected_no_of_fishParticles,
+    fishParticles,
+    fish,
+    30,
+    20,
+    false,
+    true
+  );
   Particles(
     expected_no_of_mushroomParticles,
     mushroomParticles,
     mushroom,
     55,
-    45
+    45,
+    false,
+    true
   );
 
   pop();
