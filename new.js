@@ -88,7 +88,7 @@ function scoreBarBackground() {
   pop();
 }
 
-// we tried to rewrtie it on our own, but after hours of trying we couldnt think of anything concrete, althought it is technically different :))
+// we tried to rewrtie it in our own way, but after hours of trying we couldnt think of anything concrete, althought it is technically different :))
 // here is the colision function originally inspired by https://tutorialedge.net/gamedev/aabb-collision-detection-tutorial/
 
 function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2) {
@@ -118,6 +118,7 @@ function StartScreen() {
   push();
 
   // update cloud positions and draw clouds
+  // cloud code inspired by Jovan's code for snow in Lunar Lander, that was originally inspired by Garrit's code
   noTint();
   for (let i = 0; i < cloudX.length; i++) {
     cloudX[i] -= cloudSpeed; // move the cloud to the left
@@ -156,6 +157,7 @@ function StartScreen() {
   }
 }
 
+// paritcles code changed from the original code, as requested. now there is a function for it being called every time particles are used
 function Particles(
   expected_no_of_Particles,
   particles,
@@ -565,7 +567,7 @@ function ThirdScreen() {
     expected_no_of_dogParticles,
     dogParticles,
     dog,
-    90,
+    80,
     65,
     false,
     true
@@ -583,8 +585,8 @@ function ThirdScreen() {
     expected_no_of_mushroomParticles,
     mushroomParticles,
     mushroom,
-    55,
     45,
+    35,
     false,
     true
   );
@@ -613,7 +615,6 @@ function ThirdScreen() {
   push();
 
   // fish collision with the cat
-
   for (let i = 0; i < fishParticles.length; i++) {
     fishParticles[i][1] += 1;
     if (fishParticles[i][1] > height) {
