@@ -18,6 +18,7 @@ let dogParticles = []; // to store the particles
 let fishParticles = [];
 let mushroomParticles = [];
 let glassesParticles = [];
+let bananaParticles = [];
 let score = 0; // to store the score
 let chickenX = 50; //starting x-coordinate of the chicken image
 let startButton;
@@ -57,6 +58,7 @@ function preload() {
   powerUpCat = loadImage("images/supercat.png");
   currentCat = cat;
   levelUp = loadImage("images/levelup.png");
+  banana = loadImage("images/banana.png");
 }
 
 function pauseArray() {
@@ -200,7 +202,10 @@ function Particles(
   }
 }
 
-// first level screen
+//
+// FIRST LEVEL SCREEN
+//
+
 function SecondScreen() {
   // draw background and mountain
   background(135, 206, 235);
@@ -253,6 +258,72 @@ function SecondScreen() {
   }
 
   pop();
+
+  push();
+  function BananaParticles() {
+    let max_no_of_bananaParticles = 1;
+    let expected_no_of_bananaParticles = Math.min(
+      max_no_of_bananaParticles,
+      millis() / 2000
+    );
+
+    // new banana created every 2 seconds
+    for (let i = 0; i < expected_no_of_bananaParticles; i++) {
+      if (bananaParticles.length < expected_no_of_bananaParticles) {
+        bananaParticles.push({
+          x: Math.random() * (width - 200) + 14,
+          y: Math.random() * (height - 530) + 144,
+          xSpeed: (-1, 8),
+          ySpeed: (-8, 4),
+        });
+      }
+
+      // Update and draw banana particles
+      bananaParticles[i].x += bananaParticles[i].xSpeed;
+      bananaParticles[i].y += bananaParticles[i].ySpeed;
+
+      // Bounce off the horizontal boundaries
+      if (bananaParticles[i].x > width - 40 || bananaParticles[i].x < -30) {
+        bananaParticles[i].xSpeed *= -1;
+      }
+
+      // Bounce off the vertical boundaries
+      if (bananaParticles[i].y > height - 30 || bananaParticles[i].y < 40) {
+        bananaParticles[i].ySpeed *= -1;
+      }
+
+      // Draw banana particle
+      image(
+        banana,
+        bananaParticles[i].x + 40,
+        bananaParticles[i].y + 30,
+        30,
+        30
+      );
+
+      // Check for collision with cat object
+      if (
+        checkCollision(
+          bananaParticles[i].x + 40,
+          bananaParticles[i].y + 30,
+          30,
+          30,
+          catX,
+          480,
+          80,
+          20
+        )
+      ) {
+        bananaParticles.splice(i, 1); // remove the particle from the array
+        if (!isPaused) {
+          score--; // decrease the score
+        }
+        continue; // skip drawing this particle
+      }
+    }
+  }
+  pop();
+
   push();
 
   // update cloud positions and draw clouds
@@ -474,6 +545,8 @@ function SecondScreen() {
     state = "lose";
     score = 0; // reset the score
   }
+
+  BananaParticles();
 }
 
 // level up screen
