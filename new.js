@@ -282,17 +282,17 @@ function SecondScreen() {
       bananaParticles[i].x += bananaParticles[i].xSpeed;
       bananaParticles[i].y += bananaParticles[i].ySpeed;
 
-      // Bounce off the horizontal boundaries
+      // horizonatl boundaries
       if (bananaParticles[i].x > width - 40 || bananaParticles[i].x < -30) {
         bananaParticles[i].xSpeed *= -1;
       }
 
-      // Bounce off the vertical boundaries
+      // vertical boundaries
       if (bananaParticles[i].y > height - 30 || bananaParticles[i].y < 40) {
         bananaParticles[i].ySpeed *= -1;
       }
 
-      // Draw banana particle
+      // draw banana i forgot
       image(
         banana,
         bananaParticles[i].x + 40,
@@ -301,7 +301,7 @@ function SecondScreen() {
         30
       );
 
-      // Check for collision with cat object
+      // collision with cat object same logic just no glasses case to make it harder
       if (
         checkCollision(
           bananaParticles[i].x + 40,
