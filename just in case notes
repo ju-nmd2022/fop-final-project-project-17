@@ -1,0 +1,168 @@
+PRVI EKRAN
+
+
+  // glasses particles thing
+  if (!isPaused) {
+    let max_no_of_glassesParticles = 1;
+    let expected_no_of_glassesParticles = Math.min(max_no_of_glassesParticles);
+    if (glassesParticles.length < expected_no_of_glassesParticles) {
+      glassesParticles.push([Math.random() * (width - 24) + 12, 0]);
+    }
+
+    for (let i = 0; i < glassesParticles.length; i++) {
+      glassesParticles[i][1] += 2;
+      if (glassesParticles[i][1] > height) {
+        glassesParticles[i][1] = 0;
+        glassesParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
+      }
+      // Draw particles(glasses)
+      image(
+        powerUpItem,
+        glassesParticles[i][0] + 10,
+        glassesParticles[i][1] + 30,
+        70,
+        55
+      );
+    }
+  }
+
+    if (dogParticles.length < expected_no_of_dogParticles) {
+      dogParticles.push([
+        Math.random() * (width - 24) + 12,
+        Math.random() * (height - 630) + 100,
+      ]);
+    }
+
+    for (let i = 0; i < dogParticles.length; i++) {
+      dogParticles[i][1] += 4;
+      if (dogParticles[i][1] > height) {
+        dogParticles[i][1] = 0;
+        dogParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
+      }
+      // Draw particles(dog)
+      image(dog, dogParticles[i][0] + 40, dogParticles[i][1] + 30, 70, 55);
+    }
+  }
+  
+  // for fish particles
+
+  let max_no_of_fishParticles = 4;
+  let expected_no_of_fishParticles = Math.min(
+    max_no_of_fishParticles,
+    millis() / 4000
+  );
+  if (fishParticles.length < expected_no_of_fishParticles) {
+    fishParticles.push([
+      Math.random() * (width - 24) + 12,
+      Math.random() * (height - 630) + 100,
+    ]);
+  }
+
+  for (let i = 0; i < fishParticles.length; i++) {
+    fishParticles[i][1] += 4;
+    if (fishParticles[i][1] > height) {
+      fishParticles[i][1] = 0;
+      fishParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
+    }
+    // Draw particles(fish)
+    image(fish, fishParticles[i][0] + 40, fishParticles[i][1] + 30, 30, 20);
+  }
+  
+  // for mushroom particles
+  if (!isPaused) {
+    let max_no_of_mushroomParticles = 4;
+    let expected_no_of_mushroomParticles = Math.min(
+      max_no_of_mushroomParticles,
+      millis() / 2000
+    );
+    if (mushroomParticles.length < expected_no_of_mushroomParticles) {
+      mushroomParticles.push([
+        Math.random() * (width - 24) + 12,
+        Math.random() * (height - 630) + 100,
+      ]);
+    }
+
+    for (let i = 0; i < mushroomParticles.length; i++) {
+      mushroomParticles[i][1] += 4;
+      if (mushroomParticles[i][1] > height) {
+        mushroomParticles[i][1] = 0;
+        mushroomParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
+      }
+      // Draw particles(mushroom)
+      image(
+        mushroom,
+        mushroomParticles[i][0] + 40,
+        mushroomParticles[i][1] + 30,
+        35,
+        25
+      );
+    }
+  }
+
+DRUGI EKRAN
+
+  // for dog particles
+  let max_no_of_dogParticles = 5;
+  let expected_no_of_dogParticles = Math.min(
+    max_no_of_dogParticles,
+    millis() / 2000
+  );
+  if (dogParticles.length < expected_no_of_dogParticles) {
+    dogParticles.push([Math.random() * (width - 24) + 12, 0]);
+  }
+
+  for (let i = 0; i < dogParticles.length; i++) {
+    dogParticles[i][1] += 6;
+    if (dogParticles[i][1] > height) {
+      dogParticles[i][1] = 0;
+      dogParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
+    }
+    // Draw particles(dog)
+    image(dog, dogParticles[i][0] + 40, dogParticles[i][1] + 30, 90, 65);
+  }
+
+  // for fish particles
+  let max_no_of_fishParticles = 3;
+  let expected_no_of_fishParticles = Math.min(
+    max_no_of_fishParticles,
+    millis() / 4000
+  );
+  if (fishParticles.length < expected_no_of_fishParticles) {
+    fishParticles.push([Math.random() * (width - 24) + 12, 0]);
+  }
+
+  for (let i = 0; i < fishParticles.length; i++) {
+    fishParticles[i][1] += 6;
+    if (fishParticles[i][1] > height) {
+      fishParticles[i][1] = 0;
+      fishParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
+    }
+    // Draw particles(fish)
+    image(fish, fishParticles[i][0] + 40, fishParticles[i][1] + 30, 30, 20);
+  }
+
+  // for mushroom particles
+  let max_no_of_mushroomParticles = 5;
+  let expected_no_of_mushroomParticles = Math.min(
+    max_no_of_mushroomParticles,
+    millis() / 2000
+  );
+  if (mushroomParticles.length < expected_no_of_mushroomParticles) {
+    mushroomParticles.push([Math.random() * (width - 24) + 12, 0]);
+  }
+
+  for (let i = 0; i < mushroomParticles.length; i++) {
+    mushroomParticles[i][1] += 6;
+    if (mushroomParticles[i][1] > height) {
+      mushroomParticles[i][1] = 0;
+      mushroomParticles[i][0] = Math.random() * (width - 24) + 12; // generate new x position
+    }
+    // Draw particles(mushroom)
+    image(
+      mushroom,
+      mushroomParticles[i][0] + 40,
+      mushroomParticles[i][1] + 30,
+      55,
+      45
+    );
+  }
